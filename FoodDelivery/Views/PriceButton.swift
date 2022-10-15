@@ -8,9 +8,7 @@
 import UIKit
 
 final class PriceButton: UIButton {
-    
-    weak var timer: Timer?
-    
+        
     override var isHighlighted: Bool {
         didSet {
             setAnimateTouch()

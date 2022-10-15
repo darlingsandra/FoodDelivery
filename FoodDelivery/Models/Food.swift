@@ -7,12 +7,22 @@
 
 import Foundation
 
-enum Category {
-    case pizza
-    case pasta
-    case burger
-    case desserts
-    case drinks
+enum Category: String, CaseIterable  {
+    case pizza = "Пицца"
+    case pasta = "Паста"
+    case burger = "Бургер"
+    case desserts = "Дисерты"
+    case drinks = "Напитки"
+    
+    var name: String {
+        switch self {
+        case .pizza: return "all"
+        case .pasta: return "android"
+        case .burger: return "ios"
+        case .desserts: return "design"
+        case .drinks: return "management"
+        }
+    }
 }
 
 struct ListFood: Decodable {

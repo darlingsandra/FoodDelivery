@@ -28,6 +28,9 @@
 		F5C7504528F9786C00E75B2B /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504428F9786C00E75B2B /* ThemeManager.swift */; };
 		F5C7504828F9877300E75B2B /* PriceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504728F9877300E75B2B /* PriceButton.swift */; };
 		F5C7504A28F9B8F600E75B2B /* SFUIDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5C7504928F9B8F600E75B2B /* SFUIDisplay-Bold.ttf */; };
+		F5C7504C28FA4A7600E75B2B /* CustomSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504B28FA4A7600E75B2B /* CustomSegmentedControl.swift */; };
+		F5C7504E28FA4A9800E75B2B /* CustomSegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */; };
+		F5C7505028FA5E8A00E75B2B /* CityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504F28FA5E8900E75B2B /* CityButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +57,9 @@
 		F5C7504428F9786C00E75B2B /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		F5C7504728F9877300E75B2B /* PriceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceButton.swift; sourceTree = "<group>"; };
 		F5C7504928F9B8F600E75B2B /* SFUIDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFUIDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		F5C7504B28FA4A7600E75B2B /* CustomSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedControl.swift; sourceTree = "<group>"; };
+		F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedButton.swift; sourceTree = "<group>"; };
+		F5C7504F28FA5E8900E75B2B /* CityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +218,9 @@
 			isa = PBXGroup;
 			children = (
 				F5C7504728F9877300E75B2B /* PriceButton.swift */,
+				F5C7504F28FA5E8900E75B2B /* CityButton.swift */,
+				F5C7504B28FA4A7600E75B2B /* CustomSegmentedControl.swift */,
+				F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -299,8 +308,11 @@
 				F5C7503E28F942F900E75B2B /* MenuTableViewCell.swift in Sources */,
 				F5C7504528F9786C00E75B2B /* ThemeManager.swift in Sources */,
 				F5C7501828F9113500E75B2B /* DeliveryViewController.swift in Sources */,
+				F5C7504C28FA4A7600E75B2B /* CustomSegmentedControl.swift in Sources */,
+				F5C7504E28FA4A9800E75B2B /* CustomSegmentedButton.swift in Sources */,
 				F5C7504028F952C600E75B2B /* AppAssembly.swift in Sources */,
 				F5C7500128F90E5500E75B2B /* AppDelegate.swift in Sources */,
+				F5C7505028FA5E8A00E75B2B /* CityButton.swift in Sources */,
 				F5C7501E28F916F100E75B2B /* OrderViewController.swift in Sources */,
 				F5C7504828F9877300E75B2B /* PriceButton.swift in Sources */,
 				F5C7503428F93BDA00E75B2B /* DataManager.swift in Sources */,

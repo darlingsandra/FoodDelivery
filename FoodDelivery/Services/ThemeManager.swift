@@ -12,6 +12,7 @@ struct ThemeManager {
         let attributedFontNormal: UIFont = UIFont(name: "SFUIDisplay-Regular", size: 13) ?? .systemFont(ofSize: 13)
         
         let appearanceBar = UITabBar.appearance()
+        appearanceBar.backgroundColor = UIColor.white
         appearanceBar.tintColor = UIColor.customRed
         appearanceBar.unselectedItemTintColor = UIColor.customMainGrey
         
