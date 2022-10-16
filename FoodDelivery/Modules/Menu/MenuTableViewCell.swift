@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 
 protocol MenuViewCellProtocol: AnyObject {
-    func configure(title: String, description: String, price: String)
+    func configure(title: String, description: String, price: String, imageUrl: String)
 }
 
 class MenuTableViewCell: UITableViewCell {
@@ -17,16 +18,7 @@ class MenuTableViewCell: UITableViewCell {
     static let identififer = "MenuTableViewCell"
     
     private let sizeImage: CGFloat = 132
-    
-    private lazy var foodImage: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "Food")
-        imageView.layer.cornerRadius = 10
-        imageView.frame = CGRect(x: 0, y: 0, width: sizeImage, height: sizeImage)
-        imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
+    private lazy var foodImage = FoodImageView(size: sizeImage)
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -88,10 +80,15 @@ class MenuTableViewCell: UITableViewCell {
 }
 
 extension MenuTableViewCell: MenuViewCellProtocol {
-    func configure(title: String, description: String, price: String) {
+    func configure(title: String, description: String, price: String, imageUrl: String) {
         titleLabel.text = title
         descriptionLabel.text = description
         priceButton.configure(title: price)
+        
+        foodImage.sd_imageIndicator = SDWebImageActivityIndicator.gray
+        foodImage.sd_setImage(with: URL(string: imageUrl)) { image, error, _, _ in
+            self.foodImage.image = error == nil ? image : UIImage(named: "Food")
+        }
     }
 }
 

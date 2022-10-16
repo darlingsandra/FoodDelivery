@@ -10,7 +10,7 @@ import Foundation
 protocol MenuPresenterProtocol {
     init(view: MenuViewProtocol)
     func getFoods()
-    func getCountFoods() -> Int
+    func getCountFoods(for category: Category) -> Int
     func showFood(for cell: MenuViewCellProtocol, indexPath: IndexPath)
 }
 
@@ -37,16 +37,23 @@ final class MenuPresenter: MenuPresenterProtocol {
         }
     }
     
-    func getCountFoods() -> Int {
-        foods.count
+    func getCountCategory() -> Int {
+        Set(foods.map { $0.category }).count
+    }
+    
+    func getCountFoods(for category: Category) -> Int {
+        foods.filter { $0.category == category.name }.count
     }
     
     func showFood(for cell: MenuViewCellProtocol, indexPath: IndexPath) {
-        let food = foods[indexPath.row]
+        let currentCategory = Category.allCases[indexPath.section]
+        let currentFoods = foods.filter { $0.category == currentCategory.name }
+        let food = currentFoods[indexPath.row]
         cell.configure(
             title: food.title,
             description: food.description,
-            price: "от \(food.price) р"
+            price: "от \(food.price) р",
+            imageUrl: food.imageUrl
         )
     }
 }

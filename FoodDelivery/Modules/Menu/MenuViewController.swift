@@ -43,10 +43,11 @@ final class MenuViewController: UIViewController {
     }
     
     @objc func valueChangedTab(sender: UIButton) {
-        for button in customSegmentedControl.tabs {
+        for (index, button) in customSegmentedControl.tabs.enumerated() {
             button.isSelected = button == sender
             if button.isSelected {
                 curentTab = button
+                scrollToSection(to: Category.allCases[index])
             }
         }
     }
@@ -54,23 +55,29 @@ final class MenuViewController: UIViewController {
 
 extension MenuViewController: UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        1
+        presenter.getCountCategory()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         164
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
+    }
 }
 
 extension MenuViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.getCountFoods()
+        presenter.getCountFoods(for: Category.allCases[section])
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MenuTableViewCell.identififer, for: indexPath) as? MenuTableViewCell else {
             return UITableViewCell()
         }
+        cell.tag = indexPath.row
         presenter.showFood(for: cell as MenuViewCellProtocol, indexPath: indexPath)
         return cell
     }
@@ -150,6 +157,13 @@ private extension MenuViewController {
     
     func registerCell() {
         tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: MenuTableViewCell.identififer)
+    }
+    
+    func scrollToSection(to category: Category) {
+        guard let section = Category.allCases.firstIndex(of: category),
+              tableView.numberOfSections > section else { return }
+        let indexPath: IndexPath = IndexPath(row: 0, section: section)
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 }
 
