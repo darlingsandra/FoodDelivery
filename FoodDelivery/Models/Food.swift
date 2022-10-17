@@ -33,7 +33,7 @@ struct Food: Decodable {
     let id: Int
     let title: String
     let description: String
-    let category: String
+    var category: Category
     let price: Int
     var imageUrl: String
     
@@ -49,12 +49,13 @@ struct Food: Decodable {
         self.price = try container.decode(Int.self, forKey: .price)
         
         let category = try container.decode(String.self, forKey: .category)
-        self.category = category
+        self.category = Category.pizza
         self.imageUrl = ""
         
         let currentCategorys = Category.allCases.filter { $0.name == category }
         
         guard !currentCategorys.isEmpty, let currentCategory = currentCategorys.first else { return }
         self.imageUrl = DataManager.shared.getFoodImage(for: currentCategory)
+        self.category = currentCategory
     }
 }

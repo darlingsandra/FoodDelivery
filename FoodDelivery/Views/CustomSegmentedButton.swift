@@ -51,9 +51,7 @@ private extension CustomSegmentedButton {
          
         setAttributedTitle(attributedTextNormal, for: .normal)
         setAttributedTitle(attributedTextSelected, for: .selected)
-        
-        titleEdgeInsets = UIEdgeInsets(top: 8, left: paddingSide, bottom: 8, right: paddingSide)
-        
+           
         configureButtonConstraints()
     }
         

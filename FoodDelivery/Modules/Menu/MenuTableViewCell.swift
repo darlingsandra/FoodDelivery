@@ -10,12 +10,15 @@ import SDWebImage
 
 
 protocol MenuViewCellProtocol: AnyObject {
-    func configure(title: String, description: String, price: String, imageUrl: String)
+    func configure(category: Category, title: String, description: String, price: String, imageUrl: String)
 }
 
 class MenuTableViewCell: UITableViewCell {
 
+    // MARK: - Properties
     static let identififer = "MenuTableViewCell"
+    
+    var category: Category!
     
     private let sizeImage: CGFloat = 132
     private lazy var foodImage = FoodImageView(size: sizeImage)
@@ -69,6 +72,7 @@ class MenuTableViewCell: UITableViewCell {
         return stackView
     }()
         
+    // MARK: - init
     required override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
@@ -79,8 +83,12 @@ class MenuTableViewCell: UITableViewCell {
     }
 }
 
+// MARK: - MenuViewCellProtocol
 extension MenuTableViewCell: MenuViewCellProtocol {
-    func configure(title: String, description: String, price: String, imageUrl: String) {
+    func configure(category: Category, title: String, description: String, price: String, imageUrl: String) {
+        
+        self.category = category
+        
         titleLabel.text = title
         descriptionLabel.text = description
         priceButton.configure(title: price)
@@ -92,9 +100,11 @@ extension MenuTableViewCell: MenuViewCellProtocol {
     }
 }
 
-extension MenuTableViewCell {
+// MARK: - Private method
+private extension MenuTableViewCell {
     func setupView() {
         contentView.addSubview(stackView)
+        selectionStyle = .none
         
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),

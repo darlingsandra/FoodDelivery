@@ -33,6 +33,7 @@
 		F5C7504E28FA4A9800E75B2B /* CustomSegmentedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */; };
 		F5C7505028FA5E8A00E75B2B /* CityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7504F28FA5E8900E75B2B /* CityButton.swift */; };
 		F5C7505228FA8CB000E75B2B /* FoodImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7505128FA8CB000E75B2B /* FoodImageView.swift */; };
+		F5C7505428FC4E1000E75B2B /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C7505328FC4E1000E75B2B /* BannerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,7 @@
 		F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentedButton.swift; sourceTree = "<group>"; };
 		F5C7504F28FA5E8900E75B2B /* CityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityButton.swift; sourceTree = "<group>"; };
 		F5C7505128FA8CB000E75B2B /* FoodImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodImageView.swift; sourceTree = "<group>"; };
+		F5C7505328FC4E1000E75B2B /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +88,6 @@
 				115562C831590D55A834B1C9 /* Pods-FoodDelivery.debug.xcconfig */,
 				0B5CBBA42FB675333F316E78 /* Pods-FoodDelivery.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -249,6 +250,7 @@
 				F5C7504B28FA4A7600E75B2B /* CustomSegmentedControl.swift */,
 				F5C7504D28FA4A9800E75B2B /* CustomSegmentedButton.swift */,
 				F5C7505128FA8CB000E75B2B /* FoodImageView.swift */,
+				F5C7505328FC4E1000E75B2B /* BannerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -374,6 +376,7 @@
 			files = (
 				F5C7505228FA8CB000E75B2B /* FoodImageView.swift in Sources */,
 				F5C7502F28F92F1600E75B2B /* Food.swift in Sources */,
+				F5C7505428FC4E1000E75B2B /* BannerView.swift in Sources */,
 				F5C7500528F90E5500E75B2B /* MenuViewController.swift in Sources */,
 				F5C7501A28F9165100E75B2B /* ContactViewController.swift in Sources */,
 				F5C7504328F9712200E75B2B /* UIColor+Extension.swift in Sources */,

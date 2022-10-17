@@ -1,38 +1,46 @@
 //
-//  CustomSegmentedControl.swift
+//  BannerView.swift
 //  FoodDelivery
 //
-//  Created by Александра Широкова on 15.10.2022.
+//  Created by Александра Широкова on 16.10.2022.
 //
 
 import UIKit
+import SDWebImage
 
-final class CustomSegmentedControl: UIScrollView {
+final class BannerView: UIScrollView {
 
-    var tabs: [CustomSegmentedButton] = []
+    var items: [UIImageView] = []
     
-    required init(items: [String]) {
+    required init(urls: [String]) {
         super.init(frame: .zero)
-        configure(items: items)
+        configure(urls: urls)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func addTarget(_ target: Any?, action: Selector) {
-        tabs.forEach { $0.addTarget(target, action: action, for: .touchUpInside) }
-    }
 }
 
-private extension CustomSegmentedControl {
+private extension BannerView {
     
-    func configure(items: [String]) {
-        tabs = items.map { CustomSegmentedButton(title: $0) }
+    func configure(urls: [String]) {
+        items = urls.map { url in
+            let imageView = UIImageView()
+            imageView.image = UIImage(named: url)
+            imageView.clipsToBounds = true
+            imageView.contentMode = .scaleAspectFill
+            imageView.layer.cornerRadius = 10
+            NSLayoutConstraint.activate([
+                imageView.heightAnchor.constraint(equalToConstant: 112),
+                imageView.widthAnchor.constraint(equalToConstant: 300)
+            ])
+            return imageView
+        }
                         
-        let stackView = UIStackView(arrangedSubviews: tabs)
+        let stackView = UIStackView(arrangedSubviews: items)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 8
+        stackView.spacing = 16
         
         translatesAutoresizingMaskIntoConstraints = false
         showsHorizontalScrollIndicator = false
@@ -44,8 +52,7 @@ private extension CustomSegmentedControl {
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
         
-        guard let fistTab = tabs.first, let lastTab = tabs.last else { return }
-        fistTab.isSelected = true
+        guard let fistTab = items.first, let lastTab = items.last else { return }
         
         NSLayoutConstraint.activate([
             fistTab.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16),
