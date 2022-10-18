@@ -37,7 +37,11 @@ final class MenuViewController: UIViewController {
     private var categoryTab: Tab!
     private let tableView = UITableView()
             
-    private lazy var cityButton = CityButton()
+    private lazy var cityButton: CityButton = {
+        let button = CityButton()
+        button.addTarget(self, action: #selector(cityButtonTapped(sender: )), for: .touchDown)
+        return button
+    }()
     private lazy var stackViewCity: UIStackView = {
          UIStackView(arrangedSubviews: [cityButton, UIView()])
     }()
@@ -76,6 +80,10 @@ final class MenuViewController: UIViewController {
                 scrollToSection(to: categoryTab)
             }
         }
+    }
+    
+    @objc func cityButtonTapped(sender: CityButton) {
+        sender.isCollapsed = !sender.isCollapsed
     }
 }
 

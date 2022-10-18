@@ -8,7 +8,17 @@
 import UIKit
 
 final class CityButton: UIButton {
+    
+    var isCollapsed: Bool {
+        didSet {
+            imageArrowAnimated()
+        }
+    }
+    
+    private var imageArrow = UIImageView()
+    
     required init() {
+        isCollapsed = true
         super.init(frame: .zero)
     }
     
@@ -19,10 +29,10 @@ final class CityButton: UIButton {
 
 extension CityButton {
     func configure(title: String) {
-        let imageView = UIImageView()
-        imageView.image = UIImage(named: "ArrowBottom")
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(imageView)
+        imageArrow = UIImageView()
+        imageArrow.image = UIImage(named: "ArrowBottom")
+        imageArrow.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(imageArrow)
         
         translatesAutoresizingMaskIntoConstraints = false
         let attributedFontNormal = UIFont(name: "SFUIDisplay-Medium", size: 17) ?? .systemFont(ofSize: 17)
@@ -35,8 +45,18 @@ extension CityButton {
         
         guard let titleLabel = self.titleLabel else { return }
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
-            imageView.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            imageArrow.leadingAnchor.constraint(equalTo: titleLabel.trailingAnchor, constant: 8),
+            imageArrow.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
         ])
+    }
+}
+
+private extension CityButton {
+    func imageArrowAnimated() {
+        let angle = isCollapsed ? CGFloat.pi * 2 : -CGFloat.pi / 2
+        UIView.animate(withDuration: 0.3) {
+            let transform = CGAffineTransform.identity.rotated(by: angle)
+            self.imageArrow.transform = transform
+        }
     }
 }
