@@ -12,6 +12,8 @@ protocol MenuViewProtocol: AnyObject {
 }
 
 final class MenuViewController: UIViewController {
+    
+    typealias Tab = (category: Category, button: CustomSegmentedButton)
 
     // MARK: - Properties
     var presenter: MenuPresenter!
@@ -31,9 +33,9 @@ final class MenuViewController: UIViewController {
     private lazy var minHeightTopView: CGFloat = {
         heightCityButton + heightCategoryButton + heightSpacing
     }()
-    
+   
+    private var categoryTab: Tab!
     private let tableView = UITableView()
-    private var curentTab: CustomSegmentedButton!
             
     private lazy var cityButton = CityButton()
     private lazy var stackViewCity: UIStackView = {
@@ -42,15 +44,15 @@ final class MenuViewController: UIViewController {
     
     private lazy var bannerView: BannerView = BannerView(urls: ["Banner1", "Banner2"])
     
-    private lazy var customSegmentedControl: CustomSegmentedControl = {
+    private lazy var categoryBar: CustomSegmentedControl = {
         let customSegmentedControl = CustomSegmentedControl(items:  Category.allCases.map { $0.rawValue } )
         customSegmentedControl.addTarget(self, action: #selector(valueChangedTab(sender: )))
-        curentTab = customSegmentedControl.tabs.first
+        categoryTab = (Category.allCases.first!, customSegmentedControl.tabs.first!)
         return customSegmentedControl
     }()
     
     private lazy var topView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [stackViewCity, bannerView, customSegmentedControl])
+        let stackView = UIStackView(arrangedSubviews: [stackViewCity, bannerView, categoryBar])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.backgroundColor = .customBackgroundGrey
         stackView.axis = .vertical
@@ -67,11 +69,11 @@ final class MenuViewController: UIViewController {
     }
     
     @objc func valueChangedTab(sender: UIButton) {
-        for (index, button) in customSegmentedControl.tabs.enumerated() {
+        for (index, button) in categoryBar.tabs.enumerated() {
             button.isSelected = button == sender
             if button.isSelected {
-                curentTab = button
-                scrollToSection(to: Category.allCases[index])
+                categoryTab = (Category.allCases[index], button)
+                scrollToSection(to: categoryTab)
             }
         }
     }
@@ -80,20 +82,9 @@ final class MenuViewController: UIViewController {
 // MARK: - UIScrollViewDelegate
 extension MenuViewController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0  {
-            self.heightTopViewConstraint.constant = self.minHeightTopView
-            self.tableView.layer.cornerRadius = 0
-            self.bannerView.isHidden = true
-        }
-        else {
-            self.bannerView.isHidden = false
-            self.tableView.layer.cornerRadius = 20
-            self.heightTopViewConstraint.constant = self.maxHeightTopView
-        }
-        let visiableCells = tableView.visibleCells
-        if let cell = visiableCells.first as? MenuTableViewCell {
-             setCategoryTab(for: cell.category)
-        }
+        topViewAnimated(scrollView)
+        categoryTabChangedToScroll(scrollView)
+        self.lastContentOffset = scrollView.contentOffset.y
     }
 }
 
@@ -163,7 +154,7 @@ private extension MenuViewController {
             cityButton.leadingAnchor.constraint(equalTo: stackViewCity.leadingAnchor, constant: 16),
             cityButton.heightAnchor.constraint(equalToConstant: heightCityButton),
             bannerView.heightAnchor.constraint(equalToConstant: heightBannerView),
-            customSegmentedControl.heightAnchor.constraint(equalToConstant: heightCategoryButton),
+            categoryBar.heightAnchor.constraint(equalToConstant: heightCategoryButton),
             
             tableView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 24),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -208,19 +199,38 @@ private extension MenuViewController {
         tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: MenuTableViewCell.identififer)
     }
     
-    func scrollToSection(to category: Category) {
-        guard let section = presenter.getSection(category),
+    func scrollToSection(to tab: Tab) {
+        guard let section = presenter.getSection(tab.category),
               tableView.numberOfSections > section else { return }
         let indexPath: IndexPath = IndexPath(row: 0, section: section)
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
     
-    func setCategoryTab(for category: Category) {
-        guard !(curentTab.titleLabel?.text == category.rawValue) else { return }
-        for button in customSegmentedControl.tabs {
-            if button.titleLabel?.text == category.rawValue {
+    func topViewAnimated(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0  {
+            heightTopViewConstraint.constant = self.minHeightTopView
+            tableView.layer.cornerRadius = 0
+            bannerView.isHidden = true
+        }
+        else {
+            bannerView.isHidden = false
+            tableView.layer.cornerRadius = 20
+            heightTopViewConstraint.constant = self.maxHeightTopView
+        }
+    }
+    
+    func categoryTabChangedToScroll(_ scrollView: UIScrollView) {
+        let visiableCells = tableView.visibleCells
+        guard let cell =  visiableCells.first as? MenuTableViewCell, !(cell.category == categoryTab.category) else { return }
+        let diffContentOffset = self.lastContentOffset - scrollView.contentOffset.y
+        let diffIndexCategory = (Category.allCases.firstIndex(of: categoryTab.category) ?? 0)
+            - (Category.allCases.firstIndex(of: cell.category) ?? 0)
+
+        guard (diffContentOffset > 0 && diffIndexCategory > 0) || (diffContentOffset < 0 && diffIndexCategory < 0) else { return }
+        for button in categoryBar.tabs {
+            if button.titleLabel?.text == cell.category.rawValue {
                 button.isSelected = true
-                curentTab = button
+                categoryTab = (cell.category, button)
             } else {
                 button.isSelected = false
             }
