@@ -42,6 +42,9 @@ private extension BannerView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 16
         
+        let spacingRightView = UIView()
+        stackView.addArrangedSubview(spacingRightView)
+        
         translatesAutoresizingMaskIntoConstraints = false
         showsHorizontalScrollIndicator = false
         addSubview(stackView)
@@ -52,11 +55,10 @@ private extension BannerView {
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
         
-        guard let fistTab = items.first, let lastTab = items.last else { return }
+        guard let fistTab = items.first else { return }
         
         NSLayoutConstraint.activate([
             fistTab.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16),
-            lastTab.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16),
         ])
     }
 }

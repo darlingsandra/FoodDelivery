@@ -34,6 +34,9 @@ private extension CustomSegmentedControl {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = 8
         
+        let spacingRightView = UIView()
+        stackView.addArrangedSubview(spacingRightView)
+        
         translatesAutoresizingMaskIntoConstraints = false
         showsHorizontalScrollIndicator = false
         addSubview(stackView)
@@ -42,14 +45,15 @@ private extension CustomSegmentedControl {
             stackView.topAnchor.constraint(equalTo: self.topAnchor),
             stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            spacingRightView.widthAnchor.constraint(equalToConstant: 8),
         ])
         
-        guard let fistTab = tabs.first, let lastTab = tabs.last else { return }
+        guard let fistTab = tabs.first else { return }
         fistTab.isSelected = true
         
         NSLayoutConstraint.activate([
             fistTab.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 16),
-            lastTab.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -16),
         ])
     }
 }
