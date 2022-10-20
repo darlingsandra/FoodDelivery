@@ -20,6 +20,7 @@ final class MenuViewController: UIViewController {
     
     private var lastContentOffset: CGFloat = 0
     private var heightTopViewConstraint: NSLayoutConstraint!
+    private var isAnimationInProgress = false
     
     private let heightCell: CGFloat = 164
     private let heightCityButton: CGFloat = 20
@@ -215,25 +216,31 @@ private extension MenuViewController {
     }
     
     func topViewAnimated(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0  {
-            heightTopViewConstraint.constant = self.minHeightTopView
-            tableView.layer.cornerRadius = 0
-            bannerView.isHidden = true
-        }
-        else {
-            bannerView.isHidden = false
-            tableView.layer.cornerRadius = 20
-            heightTopViewConstraint.constant = self.maxHeightTopView
+        guard !isAnimationInProgress else { return }
+        let isUpScroll = scrollView.panGestureRecognizer.translation(in: scrollView).y < 0
+     
+        UIView.animate(withDuration: 0.4) {
+            self.isAnimationInProgress = true
+            self.bannerView.alpha = isUpScroll ? 0 : 1
+            self.bannerView.isHidden = isUpScroll ? true : false
+            self.tableView.layer.cornerRadius = isUpScroll ? 0 : 20
+            self.heightTopViewConstraint.constant = isUpScroll ? self.minHeightTopView : self.maxHeightTopView
+            self.view.layoutIfNeeded()
+        } completion: { [weak self] _ in
+            self?.isAnimationInProgress = false
+            self?.bannerView.isHidden = isUpScroll ? true : false
         }
     }
     
     func categoryTabChangedToScroll(_ scrollView: UIScrollView) {
-        let visiableCells = tableView.visibleCells
-        guard let cell =  visiableCells.first as? MenuTableViewCell, !(cell.category == categoryTab.category) else { return }
+        guard let indexPath = tableView.indexPathsForVisibleRows?.first,
+              let cell = tableView.cellForRow(at: indexPath) as? MenuTableViewCell,
+              !(cell.category == categoryTab.category) else { return }
+        
         let diffContentOffset = self.lastContentOffset - scrollView.contentOffset.y
         let diffIndexCategory = (Category.allCases.firstIndex(of: categoryTab.category) ?? 0)
             - (Category.allCases.firstIndex(of: cell.category) ?? 0)
-
+        
         guard (diffContentOffset > 0 && diffIndexCategory > 0) || (diffContentOffset < 0 && diffIndexCategory < 0) else { return }
         for button in categoryBar.tabs {
             if button.titleLabel?.text == cell.category.rawValue {
